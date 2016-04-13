@@ -1,0 +1,26 @@
+{
+  "name": "json-statham",
+  "version": "0.1.0",
+  "description": "Kick your JSON's ass, with json-statham's help.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SpoonX/json-statham.git"
+  },
+  "keywords": [
+    "json",
+    "awesome",
+    "object",
+    "manipulate",
+    "tool"
+  ],
+  "author": "Rawphs <raphaela@spoonx.nl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SpoonX/json-statham/issues"
+  },
+  "homepage": "https://github.com/SpoonX/json-statham#readme"
+}
