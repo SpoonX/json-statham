@@ -1,0 +1,20 @@
+{
+  "cake": "lie",
+  "food": {
+    "bacon": {
+      "taste"    : "good",
+      "healthy"  : "no",
+      "butgooddo": "yeah"
+    },
+    "apple": {
+      "isorange": "no",
+      "healthy" : "yes",
+      "taste"   : "hmmmyes"
+    }
+  },
+  "car" : {
+    "doors" : "4",
+    "pedals": "yes",
+    "tires" : "maybe"
+  }
+}
