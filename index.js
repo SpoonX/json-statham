@@ -144,9 +144,13 @@ class Statham {
     let lastKey = keys.pop();
     let tmp     = this.data;
 
-    keys.forEach(value => {
-      tmp = tmp[value];
-    });
+    for (let i = 0; i < keys.length; i++) {
+      if (typeof tmp[keys[i]] === 'undefined') {
+        return undefined;
+      }
+
+      tmp = tmp[keys[i]];
+    }
 
     return tmp[lastKey];
   }
@@ -163,7 +167,7 @@ class Statham {
     let tmp     = this.data;
 
     keys.forEach(value => {
-      if(typeof tmp[value] === 'undefined') {
+      if (typeof tmp[value] === 'undefined') {
         tmp[value] = {};
       }
 
@@ -186,13 +190,13 @@ class Statham {
     let lastKey = keys.pop();
     let tmp     = this.data;
 
-    keys.forEach(value => {
-      if (typeof tmp[value] === 'undefined') {
+    for (let i = 0; i < keys.length; i++) {
+      if (typeof tmp[keys[i]] === 'undefined') {
         return undefined;
       }
-      
-      tmp = tmp[value];
-    });
+
+      tmp = tmp[keys[i]];
+    }
 
     delete tmp[lastKey];
 

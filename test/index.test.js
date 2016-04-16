@@ -184,6 +184,12 @@ describe('Statham', () => {
 
       assert.isUndefined(statham.fetch('food.bacon'), 'It did not return "undefined"');
     });
+
+    it("Should return 'undefined' if the key is invalid.", () => {
+      let statham = new Statham({food: {bacon: {taste: 'good'}}});
+
+      assert.isUndefined(statham.fetch('food.apple'), 'It did not return "undefined".');
+    });
   });
 
   describe('.put()', () => {
@@ -201,11 +207,11 @@ describe('Statham', () => {
       assert.strictEqual(statham.data['food.bacon.whatevs'], 'ok', 'Key and value not set properly.');
     });
 
-    it("Should return the modified instance.", () => {
+    it("Should return the modified instance's data.", () => {
       let statham = new Statham({food: {bacon: {}}});
       statham.put('food.bacon.whatevs', 'ok');
 
-      assert.strictEqual(statham.data, statham.data, "It does not return the intance's data.");
+      assert.strictEqual(statham.data, statham.data, "It does not return the instance's data.");
     });
   });
 
@@ -217,11 +223,10 @@ describe('Statham', () => {
       assert.notDeepProperty(statham.data, 'food.bacon.taste', 'It did not remove the given key.');
     });
 
-    it("Should return 'undefined' if the given key is invalid.", () => {
+    it("Should return the modified instance's data.", () => {
       let statham = new Statham({food: {bacon: {taste: 'good'}}});
-      statham.remove('food.apple');
 
-      assert.isUndefined(statham.remove('food.apple'), 'It did not return "undefined".');
+      assert.strictEqual(statham.remove('food.bacon').data, statham.data, 'It did not return the data.');
     });
   });
 });
