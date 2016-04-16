@@ -130,6 +130,74 @@ class Statham {
   isModeNested() {
     return this.mode === MODE_NESTED;
   }
+
+  fetch(key) {
+    if (typeof this.data[key] !== 'undefined') {
+      return this.data[key];
+    }
+
+    if (this.isModeFlat()) {
+      return undefined;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    keys.forEach(value => {
+      tmp = tmp[value];
+    });
+
+    return tmp[lastKey];
+  }
+
+  put(key, value) {
+    if (this.isModeFlat() || key.search('.') === -1) {
+      this.data[key] = value;
+
+      return this;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    keys.forEach(value => {
+      if(typeof tmp[value] === 'undefined') {
+        tmp[value] = {};
+      }
+
+      tmp = tmp[value];
+    });
+
+    tmp[lastKey] = value;
+
+    return this;
+  }
+
+  remove(key) {
+    if (typeof this.data[key] !== 'undefined') {
+      delete this.data[key];
+
+      return this;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    keys.forEach(value => {
+      if (typeof tmp[value] === 'undefined') {
+        return undefined;
+      }
+      
+      tmp = tmp[value];
+    });
+
+    delete tmp[lastKey];
+
+    return this;
+  }
 }
 
 module.exports.flatten = flatten;

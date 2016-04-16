@@ -171,4 +171,57 @@ describe('Statham', () => {
       assert.strictEqual(statham.isModeNested(), false, 'It does not return true.');
     });
   });
+
+  describe('.fetch()', () => {
+    it("Should return value of given key in a nested instance.", () => {
+      let statham = new Statham({food: {bacon: {taste: 'good'}}});
+
+      assert.strictEqual(statham.fetch('food.bacon.taste'), statham.data.food.bacon.taste, 'Values do not match.');
+    });
+
+    it("Should return 'undefined' if the intance's mode is flat.", () => {
+      let statham = new Statham({"food.bacon.taste": 'good'}, Statham.MODE_FLAT);
+
+      assert.isUndefined(statham.fetch('food.bacon'), 'It did not return "undefined"');
+    });
+  });
+
+  describe('.put()', () => {
+    it("Should put a new key and value in the nested intance's data.", () => {
+      let statham = new Statham({food: {bacon: {}}});
+      statham.put('food.bacon.whatevs', 'ok');
+
+      assert.deepProperty(statham.data, 'food.bacon.whatevs', 'Key and value not set properly.');
+    });
+
+    it("Should put a new key and value in the flat instance's data.", () => {
+      let statham = new Statham({"food.bacon.taste": 'good'}, Statham.MODE_FLAT);
+      statham.put('food.bacon.whatevs', 'ok');
+
+      assert.strictEqual(statham.data['food.bacon.whatevs'], 'ok', 'Key and value not set properly.');
+    });
+
+    it("Should return the modified instance.", () => {
+      let statham = new Statham({food: {bacon: {}}});
+      statham.put('food.bacon.whatevs', 'ok');
+
+      assert.strictEqual(statham.data, statham.data, "It does not return the intance's data.");
+    });
+  });
+
+  describe('.remove()', () => {
+    it("Should remove the given key from nested intance's data.", () => {
+      let statham = new Statham({food: {bacon: {taste: 'good'}}});
+      statham.remove('food.bacon.taste');
+
+      assert.notDeepProperty(statham.data, 'food.bacon.taste', 'It did not remove the given key.');
+    });
+
+    it("Should return 'undefined' if the given key is invalid.", () => {
+      let statham = new Statham({food: {bacon: {taste: 'good'}}});
+      statham.remove('food.apple');
+
+      assert.isUndefined(statham.remove('food.apple'), 'It did not return "undefined".');
+    });
+  });
 });
