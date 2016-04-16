@@ -4,7 +4,7 @@
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha -b"
+    "test": "mocha -b"
   },
   "repository": {
     "type": "git",

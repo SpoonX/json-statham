@@ -14,6 +14,20 @@ const MODES       = [MODE_FLAT, MODE_NESTED];
 class Statham {
 
   /**
+   * @return {string}
+   */
+  static get MODE_NESTED() {
+    return MODE_NESTED;
+  }
+
+  /**
+   * @return {string}
+   */
+  static get MODE_FLAT() {
+    return MODE_FLAT;
+  }
+
+  /**
    * Creates a new instance using the data from `fileName`.
    *
    * @param {String} fileName
