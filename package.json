@@ -4,7 +4,7 @@
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -b"
+    "test": "eslint index.js lib && mocha -b"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   "homepage": "https://github.com/SpoonX/json-statham#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^2.8.0",
     "mocha": "^2.4.5"
   }
 }
