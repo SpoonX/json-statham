@@ -131,6 +131,13 @@ class Statham {
     return this.mode === MODE_NESTED;
   }
 
+  /**
+   * Fetches object's key.
+   *
+   * @param {String} key
+   *
+   * @returns {*}
+   */
   fetch(key) {
     if (typeof this.data[key] !== 'undefined') {
       return this.data[key];
@@ -155,6 +162,14 @@ class Statham {
     return tmp[lastKey];
   }
 
+  /**
+   * Sets key and value in object.
+   *
+   * @param {String} key
+   * @param {*} value
+   *
+   * @returns {Statham}
+   */
   put(key, value) {
     if (this.isModeFlat() || key.search('.') === -1) {
       this.data[key] = value;
@@ -179,6 +194,13 @@ class Statham {
     return this;
   }
 
+  /**
+   * Removes key from object.
+   *
+   * @param {String} key
+   *
+   * @returns {Statham}
+   */
   remove(key) {
     if (typeof this.data[key] !== 'undefined') {
       delete this.data[key];
@@ -192,7 +214,7 @@ class Statham {
 
     for (let i = 0; i < keys.length; i++) {
       if (typeof tmp[keys[i]] === 'undefined') {
-        return undefined;
+        return this;
       }
 
       tmp = tmp[keys[i]];
