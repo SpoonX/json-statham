@@ -130,6 +130,100 @@ class Statham {
   isModeNested() {
     return this.mode === MODE_NESTED;
   }
+
+  /**
+   * Fetches value of given key.
+   *
+   * @param {String} key
+   *
+   * @returns {*}
+   */
+  fetch(key) {
+    if (typeof this.data[key] !== 'undefined') {
+      return this.data[key];
+    }
+
+    if (this.isModeFlat()) {
+      return undefined;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    for (let i = 0; i < keys.length; i++) {
+      if (typeof tmp[keys[i]] === 'undefined') {
+        return this;
+      }
+
+      tmp = tmp[keys[i]];
+    }
+
+    return tmp[lastKey];
+  }
+
+  /**
+   * Sets value for a key.
+   *
+   * @param {String} key
+   * @param {*} value
+   *
+   * @returns {Statham}
+   */
+  put(key, value) {
+    if (this.isModeFlat() || key.search('.') === -1) {
+      this.data[key] = value;
+
+      return this;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    keys.forEach(value => {
+      if (typeof tmp[value] === 'undefined') {
+        tmp[value] = {};
+      }
+
+      tmp = tmp[value];
+    });
+
+    tmp[lastKey] = value;
+
+    return this;
+  }
+
+  /**
+   * Removes value by key.
+   *
+   * @param {String} key
+   *
+   * @returns {Statham}
+   */
+  remove(key) {
+    if (typeof this.data[key] !== 'undefined') {
+      delete this.data[key];
+
+      return this;
+    }
+
+    let keys    = key.split('.');
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    for (let i = 0; i < keys.length; i++) {
+      if (typeof tmp[keys[i]] === 'undefined') {
+        return this;
+      }
+
+      tmp = tmp[keys[i]];
+    }
+
+    delete tmp[lastKey];
+
+    return this;
+  }
 }
 
 module.exports.flatten = flatten;
