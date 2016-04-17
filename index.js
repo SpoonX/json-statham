@@ -132,7 +132,7 @@ class Statham {
   }
 
   /**
-   * Fetches object's key.
+   * Fetches value of given key.
    *
    * @param {String} key
    *
@@ -163,7 +163,7 @@ class Statham {
   }
 
   /**
-   * Sets key and value in object.
+   * Sets value for a key.
    *
    * @param {String} key
    * @param {*} value
@@ -195,7 +195,7 @@ class Statham {
   }
 
   /**
-   * Removes key from object.
+   * Removes value by key.
    *
    * @param {String} key
    *
