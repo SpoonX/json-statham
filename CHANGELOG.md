@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/SpoonX/json-statham/compare/v1.2.0...v1.2.1) (2016-04-19)
+
+
+### Features
+
+* **project:** Added statham his face to scare off bad developers ([0d0c981](https://github.com/SpoonX/json-statham/commit/0d0c981))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/SpoonX/json-statham/compare/v1.1.0...v1.2.0) (2016-04-19)
 
