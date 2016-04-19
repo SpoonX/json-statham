@@ -3,6 +3,8 @@
 
 Kick your JSON's ass, with json-statham's help.
 
+![Statham is awesome man](./stathams.jpg)
+
 ## Installation
 `npm i --save json-statham`
 
