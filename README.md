@@ -40,11 +40,18 @@ statham.flatten();
 // Expand object (dot-notation keys to nested objects):
 statham.expand();
 
+// Saving data to file (returns a promise):
+statham.save().then(() => {/* Really does return a promise, I promise. */});
+statham.save('./json-flemyng.json');        // Specific file
+statham.save(true);                         // Create path for file, too
+statham.save('./matt-schulze.json', true);  // Both options
+
 // Helpers
 statham.isModeFlat();
 statham.isModeNested();
 statham.getMode();
 statham.setMode(Statham.MODE_FLAT);
+statham.setFileLocation('./foo/ray-liotta.json');
 
 // Constants
 Statham.MODE_FLAT;

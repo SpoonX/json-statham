@@ -1,31 +1,36 @@
 "use strict";
 
+let fs      = require('fs');
 let assert  = require('chai').assert;
 let flat    = require('./resources/flat.json');
 let nested  = require('./resources/nested.json');
 let Statham = require('../index.js').Statham;
+let tmpdir  = __dirname + '/.tmp';
+let del     = require('del');
 
 describe('Statham', () => {
   describe('static .fromFile()', () => {
-    it('Should return a new Statham instance with the data from given file.', done => {
-      Statham.fromFile(__dirname + '/resources/nested.json').then(statham => {
+    it('Should return a new Statham instance with the data from given file.', () => {
+      return Statham.fromFile(__dirname + '/resources/nested.json').then(statham => {
         assert.instanceOf(statham, Statham, 'Not sure what happened here.');
-
-        done();
       });
     });
 
-    it('Should return a new Statham instance with the data from given file and given mode.', done => {
+    it('Should return a new Statham instance with the data from given file and given mode.', () => {
       let instanceCreationPromises = [
         Statham.fromFile(__dirname + '/resources/flat.json', Statham.MODE_FLAT),
         Statham.fromFile(__dirname + '/resources/nested.json', Statham.MODE_NESTED)
       ];
 
-      Promise.all(instanceCreationPromises).then(results => {
+      return Promise.all(instanceCreationPromises).then(results => {
         assert.strictEqual(results[0].mode, Statham.MODE_FLAT, 'Mode is not flat.');
         assert.strictEqual(results[1].mode, Statham.MODE_NESTED, 'Mode is not nested.');
+      });
+    });
 
-        done();
+    it("Should set the file's path as the instance's `filePath`.", () => {
+      return Statham.fromFile(__dirname + '/resources/nested.json').then(statham => {
+        assert.strictEqual(statham.filePath, __dirname + '/resources/nested.json', '`filePath` not set.');
       });
     });
   });
@@ -67,6 +72,12 @@ describe('Statham', () => {
       let statham = new Statham({}, Statham.MODE_FLAT);
 
       assert.strictEqual(statham.mode, 'flat', 'It did not accept or assign mode.');
+    });
+
+    it('Should accept filePath as third argument.', () => {
+      let statham = new Statham({}, null, __dirname + 'file.json');
+
+      assert.strictEqual(statham.filePath, __dirname + 'file.json', 'It did not accept or assign path.');
     });
   });
 
@@ -229,4 +240,66 @@ describe('Statham', () => {
       assert.strictEqual(statham.remove('food.bacon').data, statham.data, 'It did not return the data.');
     });
   });
+
+  describe('.setFileLocation()', () => {
+    it('Should set the path of the file.', () => {
+      let statham = new Statham({}, null);
+
+      assert.strictEqual(statham.filePath, undefined, 'It did not set the path.');
+
+      let result = statham.setFileLocation();
+
+      assert.strictEqual(result, statham, 'It does not return this.');
+
+      assert.strictEqual(statham.filePath, undefined, 'It did not set the path.');
+
+      statham.setFileLocation('./derp');
+
+      assert.strictEqual(statham.filePath, './derp', 'It did not set the path.');
+    });
+  });
+
+  describe('.save()', () => {
+    before(clear);
+    after(clear);
+
+    it('Should throw error if the path is undefined.', () => {
+      let statham = new Statham({});
+
+      return statham.save()
+        .then(() => {
+          throw new Error('It did not throw exception.');
+        })
+        .catch(exception => {
+          assert.strictEqual(exception.message, 'Path undefined.');
+        });
+    });
+
+    it('Should create a new directory, if given path does not exist yet, and save.', () => {
+      let fileName = tmpdir + '/rtfgbhn/sdfg/file.json';
+      let statham  = new Statham({}, null, fileName);
+
+
+      return statham.save(true).then(() => {
+        require(fileName);
+      });
+    });
+
+    it('Should throw an error if filePath is nested and createPath is undefined.', () => {
+      let filePath = tmpdir + '/sajdha/askjdh';
+      let statham  = new Statham({});
+
+      return statham.save(filePath).then(() => {
+        throw new Error('It did not throw an error.');
+      }).catch(exception => {
+        assert.strictEqual(exception.message, `ENOENT: no such file or directory, open '${filePath}'`);
+      });
+    });
+  });
 });
+
+function clear(done) {
+  del(tmpdir).then(() => {
+    done();
+  }).catch(done);
+}

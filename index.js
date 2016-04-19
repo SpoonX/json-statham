@@ -1,6 +1,8 @@
 'use strict';
 
 let fs      = require('fs');
+let path    = require('path');
+let mkdirp  = require('mkdirp');
 let expand  = require('./lib/expand');
 let flatten = require('./lib/flatten');
 
@@ -50,7 +52,9 @@ class Statham {
           return reject(exception);
         }
 
-        resolve(new Statham(parsed, mode));
+        let statham = new Statham(parsed, mode, fileName);
+
+        resolve(statham);
       });
     });
   }
@@ -60,17 +64,20 @@ class Statham {
    *
    * @param {{}}     data
    * @param {String} [mode]
+   * @param {String} [filePath]
    */
-  constructor(data, mode) {
+  constructor(data, mode, filePath) {
     this.data = data;
 
-    this.setMode(mode);
+    this.setMode(mode).setFileLocation(filePath);
   }
 
   /**
    * Sets the mode.
    *
    * @param {String} [mode] Defaults to nested.
+   * 
+   * @returns {Statham} Fluent interface
    *
    * @throws {Error}
    */
@@ -84,6 +91,8 @@ class Statham {
     }
 
     this.mode = mode;
+    
+    return this;
   }
 
   /**
@@ -223,6 +232,67 @@ class Statham {
     delete tmp[lastKey];
 
     return this;
+  }
+
+  /**
+   * Sets path to file.
+   * 
+   * @param {String} [filePath] Defaults to `undefined`.
+   * 
+   * @returns {Statham}
+   */
+  setFileLocation(filePath) {
+    this.filePath = filePath || undefined;
+    
+    return this;
+  }
+
+  /**
+   * Save current state of data to file.
+   * 
+   * @param {String|Boolean} [filePath]   Path of file to save to. If boolean, used for `createPath`.
+   * @param {Boolean}        [createPath] If true, creates path to file. Defaults to false.
+   * 
+   * @returns {Promise}
+   */
+  save(filePath, createPath) {
+    if (typeof filePath === 'boolean') {
+      createPath = filePath;
+      filePath   = undefined;
+    }
+
+    filePath   = filePath || this.filePath;
+    createPath = createPath || false;
+
+    return new Promise((resolve, reject) => {
+      if (typeof filePath === 'undefined') {
+        throw new Error('Path undefined.');
+      }
+
+      let data = JSON.stringify(this.data);
+
+      if (createPath) {
+        mkdirp(path.dirname(filePath), error => {
+          if (error) {
+            return reject(error);
+          }
+
+          this.save(filePath).then(() => {
+            resolve(this);
+          });
+        });
+
+        return;
+      }
+
+      fs.writeFile(filePath, data, error => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(this);
+      });
+    });
   }
 }
 
