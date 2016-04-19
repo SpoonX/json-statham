@@ -1,5 +1,5 @@
 <a name="1.2.0"></a>
-# [1.2.0](https://github.com/SpoonX/json-statham/compare/1.1.0...v1.2.0) (2016-04-19)
+# [1.2.0](https://github.com/SpoonX/json-statham/compare/v1.1.0...v1.2.0) (2016-04-19)
 
 ### Features
 
