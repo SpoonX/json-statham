@@ -1,6 +1,12 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/SpoonX/json-statham/compare/1.1.0...v1.2.0) (2016-04-19)
+
+### Features
+
+* **Statham:** Added .save() and .setFileLocation() for more awesomer murder skillz. ([6ac524f](https://github.com/SpoonX/json-statham/commit/6ac524f))
+
 <a name="1.1.0"></a>
 # 1.1.0 (2016-04-19)
-
 
 ### Features
 
