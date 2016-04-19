@@ -26,6 +26,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.8.0",
+    "gulp": "^3.9.1",
+    "gulp-conventional-changelog": "^1.1.0",
     "mocha": "^2.4.5"
   }
 }
