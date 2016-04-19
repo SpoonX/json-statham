@@ -299,5 +299,3 @@ class Statham {
 module.exports.flatten = flatten;
 module.exports.expand  = expand;
 module.exports.Statham = Statham;
-
-
