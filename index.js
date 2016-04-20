@@ -76,7 +76,7 @@ class Statham {
    * Sets the mode.
    *
    * @param {String} [mode] Defaults to nested.
-   * 
+   *
    * @returns {Statham} Fluent interface
    *
    * @throws {Error}
@@ -91,7 +91,7 @@ class Statham {
     }
 
     this.mode = mode;
-    
+
     return this;
   }
 
@@ -236,23 +236,23 @@ class Statham {
 
   /**
    * Sets path to file.
-   * 
+   *
    * @param {String} [filePath] Defaults to `undefined`.
-   * 
+   *
    * @returns {Statham}
    */
   setFileLocation(filePath) {
     this.filePath = filePath || undefined;
-    
+
     return this;
   }
 
   /**
    * Save current state of data to file.
-   * 
+   *
    * @param {String|Boolean} [filePath]   Path of file to save to. If boolean, used for `createPath`.
    * @param {Boolean}        [createPath] If true, creates path to file. Defaults to false.
-   * 
+   *
    * @returns {Promise}
    */
   save(filePath, createPath) {
@@ -293,6 +293,32 @@ class Statham {
         resolve(this);
       });
     });
+  }
+
+  /**
+   * Search and return keys and values that match given string.
+   *
+   * @param {String|Number} phrase
+   *
+   * @returns {Array}
+   */
+  search(phrase) {
+    let found = [];
+    let data  = this.data;
+
+    if (this.isModeNested()) {
+      data = flatten(this.data);
+    }
+
+    Object.getOwnPropertyNames(data).forEach(key => {
+      let searchTarget = Array.isArray(data[key]) ? JSON.stringify(data[key]) : data[key];
+      
+      if (searchTarget.search(phrase) > -1) {
+        found.push({key: key, value: data[key]});
+      }
+    });
+
+    return found;
   }
 }
 
