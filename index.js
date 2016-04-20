@@ -298,33 +298,27 @@ class Statham {
   /**
    * Search and return keys and values that match given string.
    *
-   * @param {String} phrase
+   * @param {String|Number} phrase
    *
-   * @returns {{}}
+   * @returns {Array}
    */
   search(phrase) {
-    let tmp  = {};
-    let data = this.data;
+    let found = [];
+    let data  = this.data;
 
     if (this.isModeNested()) {
       data = flatten(this.data);
     }
 
     Object.getOwnPropertyNames(data).forEach(key => {
-      if (typeof data[key] === 'string' && data[key].indexOf(phrase) !== -1) {
-        tmp[key] = data[key];
-      }
-
-      if (Array.isArray(data[key])) {
-        let arr = JSON.stringify(data[key]);
-
-        if (arr.indexOf(phrase) !== -1) {
-          tmp[key] = data[key];
-        }
+      let searchTarget = Array.isArray(data[key]) ? JSON.stringify(data[key]) : data[key];
+      
+      if (searchTarget.search(phrase) > -1) {
+        found.push({key: key, value: data[key]});
       }
     });
 
-    return tmp;
+    return found;
   }
 }
 
