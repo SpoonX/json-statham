@@ -298,31 +298,31 @@ describe('Statham', () => {
   });
 
   describe('.search()', () => {
-    it('Should return a flat object containing all matching values from flat data.', () => {
+    it('Should return an array containing all matching values from flat data.', () => {
       let statham  = new Statham({"food.bacon.taste": "good", "fruit.and.stuff": "avocado", "water": "meh"},
         Statham.MODE_FLAT);
-      let filtered = {"food.bacon.taste": "good", "fruit.and.stuff": "avocado"};
+      let filtered = [{key: "food.bacon.taste", value: "good"}, {key: "fruit.and.stuff", value: "avocado"}];
 
       assert.deepEqual(statham.search('o'), filtered, 'It did not return a filtered object.');
     });
 
-    it('Should return a flat object containing all matching values form nested data.', () => {
+    it('Should return an array containing all matching values form nested data.', () => {
       let statham  = new Statham({food: {bacon: {taste: 'good', smell: 'true'}}, fruit: 'avocado'});
-      let filtered = {'food.bacon.taste': 'good', 'fruit': 'avocado'};
+      let filtered = [{key: 'food.bacon.taste', value: 'good'}, {key: 'fruit', value: 'avocado'}];
 
       assert.deepEqual(statham.search('o'), filtered, 'It did not return a filtered object.');
     });
 
-    it('Should return an empty object if no match is found.', () => {
+    it('Should return an empty array if no match is found.', () => {
       let statham = new Statham({"food.bacon.taste": "good", "fruit.and.stuff": "avocado", "water": "meh"},
         Statham.MODE_FLAT);
 
-      assert.deepEqual(statham.search('banana'), {}, 'It did not return an empty object.');
+      assert.deepEqual(statham.search('banana'), [], 'It did not return an empty object.');
     });
 
-    it('Should return the array that contains a match.', () => {
+    it('Should return the whole array as value if it contains a match.', () => {
       let statham  = new Statham({food: ['fries', 'pizza', 'babies'], fruit: ['avocado', 'apple']});
-      let filtered = {food: ['fries', 'pizza', 'babies'};
+      let filtered = [{key: 'food', value: ['fries', 'pizza', 'babies']}];
 
       assert.deepEqual(statham.search('babies'), filtered, 'It did not return a filtered object.');
     });
