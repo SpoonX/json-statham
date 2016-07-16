@@ -36,6 +36,9 @@ statham.put('user.profile.username', 'Frank');
 statham.fetch('user.profile.username');
 statham.remove('user.profile.username');
 
+// Merge new data into your object
+statham.merge({override: 'something'}, {and: {add: {something: 'else'}}});
+
 // Flatten object (nested objects to dot-notation keys):
 statham.flatten();
 
