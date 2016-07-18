@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/SpoonX/json-statham/compare/v1.3.0...v1.4.0) (2016-07-16)
+
+
+### Features
+
+* **merge:** Added merge (extend) feature ([b1e4c33](https://github.com/SpoonX/json-statham/commit/b1e4c33))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/SpoonX/json-statham/compare/v1.2.1...v1.3.0) (2016-04-20)
 

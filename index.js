@@ -3,6 +3,7 @@
 let fs      = require('fs');
 let path    = require('path');
 let mkdirp  = require('mkdirp');
+let extend  = require('extend');
 let expand  = require('./lib/expand');
 let flatten = require('./lib/flatten');
 
@@ -57,6 +58,30 @@ class Statham {
         resolve(statham);
       });
     });
+  }
+
+  /**
+   * Recursively merges given sources into data.
+   *
+   * @param {{}[]} sources One or more, or array of, objects to merge into data (left to right).
+   *
+   * @return {Statham}
+   */
+  merge(sources) {
+    sources       = Array.isArray(sources) ? sources : Array.prototype.slice.call(arguments);
+    let mergeData = [];
+
+    sources.forEach(source => {
+      if (!source) {
+        return;
+      }
+
+      mergeData.push(this.isModeFlat() ? flatten(source) : expand(source));
+    });
+
+    extend.apply(extend, [true, this.data].concat(mergeData));
+
+    return this;
   }
 
   /**
@@ -312,7 +337,7 @@ class Statham {
 
     Object.getOwnPropertyNames(data).forEach(key => {
       let searchTarget = Array.isArray(data[key]) ? JSON.stringify(data[key]) : data[key];
-      
+
       if (searchTarget.search(phrase) > -1) {
         found.push({key: key, value: data[key]});
       }

@@ -3,6 +3,7 @@
 let fs      = require('fs');
 let assert  = require('chai').assert;
 let flat    = require('./resources/flat.json');
+let extend  = require('extend');
 let nested  = require('./resources/nested.json');
 let Statham = require('../index.js').Statham;
 let tmpdir  = __dirname + '/.tmp';
@@ -200,6 +201,67 @@ describe('Statham', () => {
       let statham = new Statham({food: {bacon: {taste: 'good'}}});
 
       assert.isUndefined(statham.fetch('food.apple'), 'It did not return "undefined".');
+    });
+  });
+
+  describe('.merge()', () => {
+    it('Should properly merge in data, converting flat to nested.', () => {
+      let statham = new Statham(Object.assign({}, nested), Statham.MODE_NESTED);
+
+      let expected = {};
+      let v = {'bat.what.do.you.want': 'stuff'};
+      let w = {'bat.space': 'exploration'};
+      let x = {foo: 'kak', bat: {cake: 'lies', what: {test: 'is this'}}};
+      let y = {bat: {cake: 'promise!', ja: 'man'}, meh: 'wut'};
+      let z = {foo: 'bar', bat: {baz: 'bacon'}};
+
+      statham.merge(v, w, x, y, z);
+
+      assert.strictEqual(statham.data.bat.what.test, 'is this', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.bat.what.do.you.want, 'stuff', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.bat.space, 'exploration', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.bat.cake, 'promise!', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.bat.ja, 'man', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.foo, 'bar', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.food.bacon.taste, 'good', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data.cake, 'lie', 'Merge did not work as expected.');
+    });
+
+    it('Should properly merge in data, converting nested to flat.', () => {
+      let statham = new Statham(Object.assign({}, flat), Statham.MODE_FLAT);
+
+      let expected = {};
+      let v = {'bat.what.do.you.want': 'stuff'};
+      let w = {'bat.space': 'exploration'};
+      let x = {foo: 'kak', bat: {cake: 'lies', what: {test: 'is this'}}};
+      let y = {bat: {cake: 'promise!', ja: 'man'}, meh: 'wut'};
+      let z = {foo: 'bar', bat: {baz: 'bacon'}};
+
+      statham.merge(v, w, x, y, z);
+
+      assert.strictEqual(statham.data['bat.what.test'], 'is this', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['bat.what.do.you.want'], 'stuff', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['bat.space'], 'exploration', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['bat.cake'], 'promise!', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['bat.ja'], 'man', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['foo'], 'bar', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['food.bacon.taste'], 'good', 'Merge did not work as expected.');
+      assert.strictEqual(statham.data['cake'], 'lie', 'Merge did not work as expected.');
+    });
+
+    it('Should not merge data when provided falsy value.', () => {
+      let statham = new Statham({hello: 'world'});
+
+      statham.merge();
+      assert.deepEqual(statham.data, {hello: 'world'});
+      statham.merge(null);
+      assert.deepEqual(statham.data, {hello: 'world'});
+    });
+
+    it('Should return self.', () => {
+      let statham = new Statham({hello: 'world'});
+
+      assert.strictEqual(statham.merge({how: 'are you doing'}), statham, 'Merge did not return self.');
     });
   });
 
