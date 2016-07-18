@@ -39,6 +39,12 @@ statham.remove('user.profile.username');
 // Merge new data into your object
 statham.merge({override: 'something'}, {and: {add: {something: 'else'}}});
 
+// And the same again, but with nested keys!
+statham.merge(
+  {'no.way.this.is.not.possible': 'right?', 'you.are.wrong': 'It is'},
+  {mind: 'blown'}
+);
+
 // Flatten object (nested objects to dot-notation keys):
 statham.flatten();
 
