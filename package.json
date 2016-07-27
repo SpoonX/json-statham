@@ -1,6 +1,6 @@
 {
   "name": "json-statham",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "scripts": {
@@ -34,5 +34,12 @@
   "dependencies": {
     "extend": "^3.0.0",
     "mkdirp": "^0.5.1"
+  },
+  "jspm": {
+    "map": {
+      "fs": "@empty",
+      "path": "@empty",
+      "mkdirp": "@empty"
+    }
   }
 }
