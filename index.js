@@ -39,6 +39,8 @@ class Statham {
    * @return {Promise}
    */
   static fromFile(fileName, mode) {
+    serverOnly(); // Throw an exeption when called in the browser.
+
     return new Promise((resolve, reject) => {
       fs.readFile(fileName, 'utf8', (error, data) => {
         if (error) {
@@ -281,6 +283,8 @@ class Statham {
    * @returns {Promise}
    */
   save(filePath, createPath) {
+    serverOnly(); // Throw an exeption when called in the browser.
+
     if (typeof filePath === 'boolean') {
       createPath = filePath;
       filePath   = undefined;
@@ -344,6 +348,12 @@ class Statham {
     });
 
     return found;
+  }
+}
+
+function serverOnly () {
+  if (typeof window !== 'undefined') {
+    throw new Error('Unsupported environment. This method only works on the server (node.js).');
   }
 }
 
