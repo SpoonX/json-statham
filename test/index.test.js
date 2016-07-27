@@ -371,7 +371,7 @@ describe('Statham', () => {
           assert.strictEqual(exception.message, 'Path undefined.');
 
           done();
-        });
+        }).catch(done);
     });
 
     it('Should create a new directory, if given path does not exist yet, and save.', done => {
@@ -381,12 +381,10 @@ describe('Statham', () => {
       return statham.save(true).then(() => {
         require(fileName);
         done();
-      }).catch(exception => {
-        done(exception);
-      });
+      }).catch(done);
     });
 
-    it('Should throw an error if filePath is nested and createPath is undefined.', () => {
+    it('Should throw an error if filePath is nested and createPath is undefined.', done => {
       let filePath = tmpdir + '/sajdha/askjdh';
       let statham  = new Statham({});
 
@@ -394,7 +392,9 @@ describe('Statham', () => {
         throw new Error('It did not throw an error.');
       }).catch(exception => {
         assert.strictEqual(exception.message, `ENOENT: no such file or directory, open '${filePath}'`);
-      });
+
+        done();
+      }).catch(done);
     });
   });
 
