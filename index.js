@@ -3,6 +3,7 @@
 const extend      = require('extend');
 const FileSystem  = require('./lib/filesystem.js');
 const expand      = require('./lib/expand');
+const Utils       = require('./lib/utils');
 const flatten     = require('./lib/flatten');
 const MODE_FLAT   = 'flat';
 const MODE_NESTED = 'nested';
@@ -49,6 +50,10 @@ class Statham {
    * @return {Promise}
    */
   static fromFile(fileName, mode) {
+    if (!Utils.isServer()) {
+      return Utils.unsupportedEnvironment();
+    }
+
     return FileSystem.fromFile(fileName).then(data => new Statham(data, mode, fileName));
   }
 
@@ -153,7 +158,7 @@ class Statham {
    * @returns {*}
    */
   fetch(key, data) {
-    let rest = normalizeKey(key);
+    let rest = Utils.normalizeKey(key);
     key      = rest.shift();
     data     = data || this.data;
 
@@ -175,7 +180,7 @@ class Statham {
       return this;
     }
 
-    let normalizedKey = normalizeKey(key);
+    let normalizedKey = Utils.normalizeKey(key);
     let lastKey       = normalizedKey.pop();
     let source        = this.fetch(normalizedKey);
 
@@ -200,7 +205,7 @@ class Statham {
       return this;
     }
 
-    let normalizedKey = normalizeKey(key);
+    let normalizedKey = Utils.normalizeKey(key);
     let lastKey       = normalizedKey.pop();
     let source        = this.fetch(normalizedKey);
 
@@ -233,6 +238,10 @@ class Statham {
    * @returns {Promise}
    */
   save(filePath, createPath) {
+    if (!Utils.isServer()) {
+      return Utils.unsupportedEnvironment();
+    }
+
     if (typeof filePath === 'boolean') {
       createPath = filePath;
       filePath   = undefined;
@@ -268,14 +277,7 @@ class Statham {
   }
 }
 
-function normalizeKey(rest) {
-  rest           = Array.isArray(rest) ? rest : Array.prototype.slice.call(arguments);
-  let key        = rest.shift();
-  let normalized = Array.isArray(key) ? normalizeKey(key) : key.split('.');
-
-  return rest.length === 0 ? normalized : normalized.concat(normalizeKey(rest));
-}
-
 module.exports.flatten = flatten;
+module.exports.expand  = expand;
 module.exports.expand  = expand;
 module.exports.Statham = Statham;
