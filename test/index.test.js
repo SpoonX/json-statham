@@ -11,6 +11,23 @@ let del     = require('del');
 
 describe('Statham', () => {
   describe('static .fromFile()', () => {
+
+    it('Should throw error if browser.', (done) => {
+      global.window = true;
+
+      return Statham.fromFile(__dirname + '/resources/nested.json')
+        .then(() => {
+          throw new Error('It did not throw exception.');
+        })
+        .catch(exception => {
+          assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
+
+          global.window = undefined;
+
+          done();
+        });
+    });
+
     it('Should return a new Statham instance with the data from given file.', () => {
       return Statham.fromFile(__dirname + '/resources/nested.json').then(statham => {
         assert.instanceOf(statham, Statham, 'Not sure what happened here.');
@@ -325,7 +342,24 @@ describe('Statham', () => {
     before(clear);
     after(clear);
 
-    it('Should throw error if the path is undefined.', () => {
+    it('Should throw error if browser.', (done) => {
+      let statham   = new Statham({});
+      global.window = true;
+
+      return statham.save()
+        .then(() => {
+          throw new Error('It did not throw exception.');
+        })
+        .catch(exception => {
+          assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
+
+          global.window = undefined;
+
+          done();
+        });
+    });
+
+    it('Should throw error if the path is undefined.', (done) => {
       let statham = new Statham({});
 
       return statham.save()
@@ -334,6 +368,8 @@ describe('Statham', () => {
         })
         .catch(exception => {
           assert.strictEqual(exception.message, 'Path undefined.');
+
+          done();
         });
     });
 

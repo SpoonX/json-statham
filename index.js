@@ -40,6 +40,8 @@ class Statham {
    */
   static fromFile(fileName, mode) {
     return new Promise((resolve, reject) => {
+      serverOnly(); // Throw an exeption when called in the browser.
+
       fs.readFile(fileName, 'utf8', (error, data) => {
         if (error) {
           return reject(error);
@@ -290,6 +292,8 @@ class Statham {
     createPath = createPath || false;
 
     return new Promise((resolve, reject) => {
+      serverOnly(); // Throw an exeption when called in the browser.
+
       if (typeof filePath === 'undefined') {
         throw new Error('Path undefined.');
       }
@@ -344,6 +348,12 @@ class Statham {
     });
 
     return found;
+  }
+}
+
+function serverOnly () {
+  if (typeof window !== 'undefined') {
+    throw new Error('Unsupported environment. This method only works on the server (node.js).');
   }
 }
 

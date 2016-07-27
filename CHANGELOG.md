@@ -1,3 +1,18 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/SpoonX/json-statham/compare/v1.4.0...v1.5.0) (2016-07-27)
+
+
+### Bug Fixes
+
+* **project:** Move browser check in promise, to resolve in .catch() ([68acf83](https://github.com/SpoonX/json-statham/commit/68acf83))
+
+
+### Features
+
+* **project:** Added browser support ([b993e67](https://github.com/SpoonX/json-statham/commit/b993e67))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/SpoonX/json-statham/compare/v1.3.0...v1.4.0) (2016-07-16)
 
