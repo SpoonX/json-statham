@@ -5,6 +5,8 @@ Kick your JSON's ass, with json-statham's help.
 
 ![Statham is awesome man](./stathams.jpg)
 
+Makes working with javascript objects and json easy, in both the browser and on the server.
+
 ## Installation
 `npm i --save json-statham`
 
@@ -51,7 +53,7 @@ statham.flatten();
 // Expand object (dot-notation keys to nested objects):
 statham.expand();
 
-// Saving data to file (returns a promise):
+// (Server-side only!) Saving data to file (returns a promise):
 statham.save().then(() => {/* Really does return a promise, I promise. */});
 statham.save('./json-flemyng.json');        // Specific file
 statham.save(true);                         // Create path for file, too
@@ -69,7 +71,7 @@ Statham.MODE_FLAT;
 Statham.MODE_NESTED;
 ```
 
-#### Using .fromFile()
+#### Using .fromFile() (server only)
 This method allows you to tell Statham to fetch the contents of a file itself. This method returns a promise, and resolves with a statham instance (as described above).
 
 ```js
