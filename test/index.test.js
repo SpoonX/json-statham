@@ -12,12 +12,12 @@ let del     = require('del');
 describe('Statham', () => {
   describe('static .fromFile()', () => {
 
-    it('Should throw error if browser.', (done) => {
+    it('Should throw error if browser.', done => {
       global.window = true;
 
       return Statham.fromFile(__dirname + '/resources/nested.json')
         .then(() => {
-          throw new Error('It did not throw exception.');
+          done(new Error('It did not throw exception.'));
         })
         .catch(exception => {
           assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
@@ -218,6 +218,7 @@ describe('Statham', () => {
       let statham = new Statham({food: {bacon: {taste: 'good'}}});
 
       assert.isUndefined(statham.fetch('food.apple'), 'It did not return "undefined".');
+      assert.isUndefined(statham.fetch('food.apple.going.deeper'), 'It did not return "undefined".');
     });
   });
 
@@ -342,13 +343,13 @@ describe('Statham', () => {
     before(clear);
     after(clear);
 
-    it('Should throw error if browser.', (done) => {
+    it('Should throw error if browser.', done => {
       let statham   = new Statham({});
       global.window = true;
 
       return statham.save()
         .then(() => {
-          throw new Error('It did not throw exception.');
+          done(new Error('It did not throw exception.'));
         })
         .catch(exception => {
           assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
@@ -359,31 +360,31 @@ describe('Statham', () => {
         });
     });
 
-    it('Should throw error if the path is undefined.', (done) => {
+    it('Should throw error if the path is undefined.', done => {
       let statham = new Statham({});
 
       return statham.save()
         .then(() => {
-          throw new Error('It did not throw exception.');
+          done(new Error('It did not throw exception.'));
         })
         .catch(exception => {
           assert.strictEqual(exception.message, 'Path undefined.');
 
           done();
-        });
+        }).catch(done);
     });
 
-    it('Should create a new directory, if given path does not exist yet, and save.', () => {
+    it('Should create a new directory, if given path does not exist yet, and save.', done => {
       let fileName = tmpdir + '/rtfgbhn/sdfg/file.json';
       let statham  = new Statham({}, null, fileName);
 
-
       return statham.save(true).then(() => {
         require(fileName);
-      });
+        done();
+      }).catch(done);
     });
 
-    it('Should throw an error if filePath is nested and createPath is undefined.', () => {
+    it('Should throw an error if filePath is nested and createPath is undefined.', done => {
       let filePath = tmpdir + '/sajdha/askjdh';
       let statham  = new Statham({});
 
@@ -391,7 +392,9 @@ describe('Statham', () => {
         throw new Error('It did not throw an error.');
       }).catch(exception => {
         assert.strictEqual(exception.message, `ENOENT: no such file or directory, open '${filePath}'`);
-      });
+
+        done();
+      }).catch(done);
     });
   });
 

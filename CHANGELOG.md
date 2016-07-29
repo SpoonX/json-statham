@@ -1,3 +1,8 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/SpoonX/json-statham/compare/v1.5.0...v1.6.0) (2016-07-27)
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/SpoonX/json-statham/compare/v1.4.0...v1.5.0) (2016-07-27)
 

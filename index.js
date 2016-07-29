@@ -1,12 +1,10 @@
 'use strict';
 
-let fs      = require('fs');
-let path    = require('path');
-let mkdirp  = require('mkdirp');
-let extend  = require('extend');
-let expand  = require('./lib/expand');
-let flatten = require('./lib/flatten');
-
+const extend      = require('extend');
+const FileSystem  = require('./lib/filesystem.js');
+const expand      = require('./lib/expand');
+const Utils       = require('./lib/utils');
+const flatten     = require('./lib/flatten');
 const MODE_FLAT   = 'flat';
 const MODE_NESTED = 'nested';
 const MODES       = [MODE_FLAT, MODE_NESTED];
@@ -31,6 +29,19 @@ class Statham {
   }
 
   /**
+   * Constructs a new instance of Statham.
+   *
+   * @param {{}}     [data]       Defaults to empty object.
+   * @param {String} [mode]       Defaults to nested
+   * @param {String} [filePath]
+   */
+  constructor(data, mode, filePath) {
+    this.data = data || {};
+
+    this.setMode(mode).setFileLocation(filePath);
+  }
+
+  /**
    * Creates a new instance using the data from `fileName`.
    *
    * @param {String} fileName
@@ -39,27 +50,11 @@ class Statham {
    * @return {Promise}
    */
   static fromFile(fileName, mode) {
-    return new Promise((resolve, reject) => {
-      serverOnly(); // Throw an exeption when called in the browser.
+    if (!Utils.isServer()) {
+      return Utils.unsupportedEnvironment();
+    }
 
-      fs.readFile(fileName, 'utf8', (error, data) => {
-        if (error) {
-          return reject(error);
-        }
-
-        let parsed;
-
-        try {
-          parsed = JSON.parse(data);
-        } catch (exception) {
-          return reject(exception);
-        }
-
-        let statham = new Statham(parsed, mode, fileName);
-
-        resolve(statham);
-      });
-    });
+    return FileSystem.fromFile(fileName).then(data => new Statham(data, mode, fileName));
   }
 
   /**
@@ -84,19 +79,6 @@ class Statham {
     extend.apply(extend, [true, this.data].concat(mergeData));
 
     return this;
-  }
-
-  /**
-   * Constructs a new instance of Statham.
-   *
-   * @param {{}}     data
-   * @param {String} [mode]
-   * @param {String} [filePath]
-   */
-  constructor(data, mode, filePath) {
-    this.data = data;
-
-    this.setMode(mode).setFileLocation(filePath);
   }
 
   /**
@@ -171,38 +153,23 @@ class Statham {
    * Fetches value of given key.
    *
    * @param {String} key
+   * @param {String} [data] Base object to search in
    *
    * @returns {*}
    */
-  fetch(key) {
-    if (typeof this.data[key] !== 'undefined') {
-      return this.data[key];
-    }
+  fetch(key, data) {
+    let rest = Utils.normalizeKey(key);
+    key      = rest.shift();
+    data     = data || this.data;
 
-    if (this.isModeFlat()) {
-      return undefined;
-    }
-
-    let keys    = key.split('.');
-    let lastKey = keys.pop();
-    let tmp     = this.data;
-
-    for (let i = 0; i < keys.length; i++) {
-      if (typeof tmp[keys[i]] === 'undefined') {
-        return this;
-      }
-
-      tmp = tmp[keys[i]];
-    }
-
-    return tmp[lastKey];
+    return rest.length === 0 ? data[key] : this.fetch(rest, data[key]);
   }
 
   /**
    * Sets value for a key.
    *
-   * @param {String} key
-   * @param {*} value
+   * @param {String|Array} key    Array of key parts, or dot separated key.
+   * @param {*}            value
    *
    * @returns {Statham}
    */
@@ -213,19 +180,13 @@ class Statham {
       return this;
     }
 
-    let keys    = key.split('.');
-    let lastKey = keys.pop();
-    let tmp     = this.data;
+    let normalizedKey = Utils.normalizeKey(key);
+    let lastKey       = normalizedKey.pop();
+    let source        = this.fetch(normalizedKey);
 
-    keys.forEach(value => {
-      if (typeof tmp[value] === 'undefined') {
-        tmp[value] = {};
-      }
-
-      tmp = tmp[value];
-    });
-
-    tmp[lastKey] = value;
+    if (typeof source === 'object') {
+      source[lastKey] = value;
+    }
 
     return this;
   }
@@ -238,25 +199,19 @@ class Statham {
    * @returns {Statham}
    */
   remove(key) {
-    if (typeof this.data[key] !== 'undefined') {
+    if (this.isModeFlat() || key.search('.') === -1) {
       delete this.data[key];
 
       return this;
     }
 
-    let keys    = key.split('.');
-    let lastKey = keys.pop();
-    let tmp     = this.data;
+    let normalizedKey = Utils.normalizeKey(key);
+    let lastKey       = normalizedKey.pop();
+    let source        = this.fetch(normalizedKey);
 
-    for (let i = 0; i < keys.length; i++) {
-      if (typeof tmp[keys[i]] === 'undefined') {
-        return this;
-      }
-
-      tmp = tmp[keys[i]];
+    if (typeof source === 'object') {
+      delete source[lastKey];
     }
-
-    delete tmp[lastKey];
 
     return this;
   }
@@ -283,45 +238,16 @@ class Statham {
    * @returns {Promise}
    */
   save(filePath, createPath) {
+    if (!Utils.isServer()) {
+      return Utils.unsupportedEnvironment();
+    }
+
     if (typeof filePath === 'boolean') {
       createPath = filePath;
       filePath   = undefined;
     }
 
-    filePath   = filePath || this.filePath;
-    createPath = createPath || false;
-
-    return new Promise((resolve, reject) => {
-      serverOnly(); // Throw an exeption when called in the browser.
-
-      if (typeof filePath === 'undefined') {
-        throw new Error('Path undefined.');
-      }
-
-      let data = JSON.stringify(this.data);
-
-      if (createPath) {
-        mkdirp(path.dirname(filePath), error => {
-          if (error) {
-            return reject(error);
-          }
-
-          this.save(filePath).then(() => {
-            resolve(this);
-          });
-        });
-
-        return;
-      }
-
-      fs.writeFile(filePath, data, error => {
-        if (error) {
-          return reject(error);
-        }
-
-        resolve(this);
-      });
-    });
+    return FileSystem.save(filePath || this.filePath, !!createPath, this.data);
   }
 
   /**
@@ -351,12 +277,7 @@ class Statham {
   }
 }
 
-function serverOnly () {
-  if (typeof window !== 'undefined') {
-    throw new Error('Unsupported environment. This method only works on the server (node.js).');
-  }
-}
-
 module.exports.flatten = flatten;
+module.exports.expand  = expand;
 module.exports.expand  = expand;
 module.exports.Statham = Statham;

@@ -1,6 +1,6 @@
 {
   "name": "json-statham",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,8 @@
     "map": {
       "fs": "@empty",
       "path": "@empty",
-      "mkdirp": "@empty"
+      "mkdirp": "@empty",
+      "./lib/filesystem.js": "@empty"
     }
   }
 }
