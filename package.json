@@ -4,7 +4,8 @@
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "scripts": {
-    "test": "eslint index.js lib && mocha -b"
+    "test": "eslint index.js lib && mocha -b",
+    "build": ".\\node_modules\\.bin\\buble -i index.js -o dist/index.js && .\\node_modules\\.bin\\buble -i lib/ -o dist/lib/"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/SpoonX/json-statham#readme",
   "devDependencies": {
+    "buble": "^0.12.5",
     "chai": "^3.5.0",
     "del": "^2.2.0",
     "eslint": "^2.8.0",
@@ -36,6 +38,16 @@
     "mkdirp": "^0.5.1"
   },
   "jspm": {
+    "jspmPackage": true,
+    "registry": "npm",
+    "main": "index",
+    "format": "cjs",
+    "directories": {
+      "dist": "dist"
+    },
+    "dependencies": {
+      "extend": "^3.0.0"
+    },
     "map": {
       "fs": "@empty",
       "path": "@empty",
