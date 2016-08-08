@@ -65,6 +65,10 @@ Statham.prototype.merge = function merge (sources) {
       return;
     }
 
+    if (source instanceof Statham) {
+      source = source.data;
+    }
+
     mergeData.push(this$1.isModeFlat() ? flatten(source) : expand(source));
   });
 
@@ -225,9 +229,9 @@ Statham.prototype.setFileLocation = function setFileLocation (filePath) {
  * Save current state of data to file.
  *
  * @param {String|Boolean} [filePath] Path of file to save to. If boolean, used for `createPath`.
-   * @param {Boolean}      [createPath] If true, creates path to file. Defaults to false.
- *
- * @returns {Promise}
+ * @param {Boolean}      [createPath] If true, creates path to file. Defaults to false.
+   *
+   * @returns {Promise}
  */
 Statham.prototype.save = function save (filePath, createPath) {
   if (!Utils.isServer()) {
