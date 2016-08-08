@@ -1,3 +1,13 @@
+<a name="1.6.1"></a>
+## [1.6.1](https://github.com/SpoonX/json-statham/compare/v1.5.0...v1.6.1) (2016-08-08)
+
+
+### Features
+
+* **project:** add 'npm run build'  to buble build the jspm dist ([addac85](https://github.com/SpoonX/json-statham/commit/addac85))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/SpoonX/json-statham/compare/v1.5.0...v1.6.0) (2016-07-27)
 
