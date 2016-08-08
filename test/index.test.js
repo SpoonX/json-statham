@@ -245,6 +245,16 @@ describe('Statham', () => {
       assert.strictEqual(statham.data.cake, 'lie', 'Merge did not work as expected.');
     });
 
+    it('Should merge statham instances.', () => {
+      let statham    = new Statham({foo: 'bar', bacon: 'cake'});
+      let stathamTwo = new Statham({foo: 'barz', topical: 'maybe'});
+
+      assert.strictEqual(statham.merge(stathamTwo), statham);
+      assert.strictEqual(statham.fetch('foo'), 'barz');
+      assert.strictEqual(statham.fetch('bacon'), 'cake');
+      assert.strictEqual(statham.fetch('topical'), 'maybe');
+    });
+
     it('Should properly merge in data, converting nested to flat.', () => {
       let statham = new Statham(Object.assign({}, flat), Statham.MODE_FLAT);
 
