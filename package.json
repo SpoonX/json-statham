@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint index.js lib && mocha -b",
-    "build": ".\\node_modules\\.bin\\buble -i index.js -o dist/index.js && .\\node_modules\\.bin\\buble -i lib/ -o dist/lib/"
+    "build": "buble -i index.js -o dist/index.js && buble -i lib/ -o dist/lib/"
   },
   "repository": {
     "type": "git",
