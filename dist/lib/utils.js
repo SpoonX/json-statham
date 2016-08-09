@@ -28,4 +28,15 @@ Utils.unsupportedEnvironment = function unsupportedEnvironment () {
   return Promise.reject(new Error('Unsupported environment. This method only works on the server (node.js).'));
 };
 
+/**
+ * Check if `target` is a Plain ol' Javascript Object.
+ *
+ * @param {*} target
+ *
+ * @return {boolean}
+ */
+Utils.isPojo = function isPojo (target) {
+  return !(target === null || typeof target !== 'object') && target.constructor === Object;
+};
+
 module.exports = Utils;

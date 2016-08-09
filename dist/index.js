@@ -148,21 +148,39 @@ Statham.prototype.isModeNested = function isModeNested () {
 /**
  * Fetches value of given key.
  *
- * @param {String} key
- * @param {String} [data] Base object to search in
+ * @param {String|Array} key
+ * @param {*}          [defaultValue] Value to return if key was not found
  *
  * @returns {*}
  */
-Statham.prototype.fetch = function fetch (key, data) {
-  var rest = Utils.normalizeKey(key);
-  key    = rest.shift();
-  data   = data || this.data;
+Statham.prototype.fetch = function fetch (key, defaultValue) {
+  defaultValue = typeof defaultValue === 'undefined' ? null : defaultValue;
 
-  return rest.length === 0 ? data[key] : this.fetch(rest, data[key]);
+  if (typeof this.data[key] !== 'undefined') {
+    return this.data[key];
+  }
+
+  if (this.isModeFlat()) {
+    return defaultValue;
+  }
+
+  var keys  = Utils.normalizeKey(key);
+  var lastKey = keys.pop();
+  var tmp   = this.data;
+
+  for (var i = 0; i < keys.length; i++) {
+    if (typeof tmp[keys[i]] === 'undefined') {
+      return defaultValue;
+    }
+
+    tmp = tmp[keys[i]];
+  }
+
+  return typeof tmp[lastKey] === 'undefined' ? defaultValue : tmp[lastKey];
 };
 
 /**
- * Sets value for a key.
+ * Sets value for a key (creates object in path when not found).
  *
  * @param {String|Array} key  Array of key parts, or dot separated key.
  * @param {*}          value
@@ -170,19 +188,25 @@ Statham.prototype.fetch = function fetch (key, data) {
  * @returns {Statham}
  */
 Statham.prototype.put = function put (key, value) {
-  if (this.isModeFlat() || key.search('.') === -1) {
+  if (this.isModeFlat() || key.indexOf('.') === -1) {
     this.data[key] = value;
 
     return this;
   }
 
-  var normalizedKey = Utils.normalizeKey(key);
-  var lastKey     = normalizedKey.pop();
-  var source      = this.fetch(normalizedKey);
+  var keys  = Utils.normalizeKey(key);
+  var lastKey = keys.pop();
+  var tmp   = this.data;
 
-  if (typeof source === 'object') {
-    source[lastKey] = value;
-  }
+  keys.forEach(function (value) {
+    if (typeof tmp[value] === 'undefined') {
+      tmp[value] = {};
+    }
+
+    tmp = tmp[value];
+  });
+
+  tmp[lastKey] = value;
 
   return this;
 };
@@ -195,7 +219,7 @@ Statham.prototype.put = function put (key, value) {
  * @returns {Statham}
  */
 Statham.prototype.remove = function remove (key) {
-  if (this.isModeFlat() || key.search('.') === -1) {
+  if (this.isModeFlat() || key.indexOf('.') === -1) {
     delete this.data[key];
 
     return this;
@@ -206,7 +230,7 @@ Statham.prototype.remove = function remove (key) {
   var source      = this.fetch(normalizedKey);
 
   if (typeof source === 'object') {
-    delete source[lastKey];
+      delete source[lastKey];
   }
 
   return this;
@@ -230,8 +254,8 @@ Statham.prototype.setFileLocation = function setFileLocation (filePath) {
  *
  * @param {String|Boolean} [filePath] Path of file to save to. If boolean, used for `createPath`.
  * @param {Boolean}      [createPath] If true, creates path to file. Defaults to false.
-   *
-   * @returns {Promise}
+ *
+ * @returns {Promise}
  */
 Statham.prototype.save = function save (filePath, createPath) {
   if (!Utils.isServer()) {
