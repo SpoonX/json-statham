@@ -157,7 +157,7 @@ class Statham {
    * Fetches value of given key.
    *
    * @param {String} key
-   * @param {String} [data] Base object to search in
+   * @param {{}}     [data] Base object to search in
    *
    * @returns {*}
    */
