@@ -1,3 +1,13 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/SpoonX/json-statham/compare/v2.0.0...v2.0.1) (2016-08-09)
+
+
+### Features
+
+* **project:** add typings ([3372563](https://github.com/SpoonX/json-statham/commit/3372563))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/SpoonX/json-statham/compare/v1.5.0...v2.0.0) (2016-08-08)
 
