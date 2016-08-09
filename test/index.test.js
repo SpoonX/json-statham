@@ -208,17 +208,37 @@ describe('Statham', () => {
       assert.strictEqual(statham.fetch('food.bacon.taste'), statham.data.food.bacon.taste, 'Values do not match.');
     });
 
-    it("Should return 'undefined' if the intance's mode is flat.", () => {
+    it("Should return 'null' if the intance's mode is flat.", () => {
       let statham = new Statham({"food.bacon.taste": 'good'}, Statham.MODE_FLAT);
 
-      assert.isUndefined(statham.fetch('food.bacon'), 'It did not return "undefined"');
+      assert.isNull(statham.fetch('food.bacon'), 'It did not return "null"');
     });
 
-    it("Should return 'undefined' if the key is invalid.", () => {
+    it("Should return provided default value if not found.", () => {
+      let statham = new Statham();
+
+      assert.strictEqual(statham.fetch('food.bacon', 'I am default'), 'I am default');
+    });
+
+    it("Should not return if last segment of key matches.", () => {
+      let statham = new Statham({foo: 'bar'});
+
+      assert.strictEqual(statham.fetch('food.bacon.foo'), null);
+    });
+
+    it("Should function well for arrays.", () => {
+      let statham = new Statham({foo: ['bar', 'bat']}, Statham.MODE_FLAT);
+
+      assert.isNull(statham.fetch('foo.0'), 'bar');
+      assert.isNull(statham.fetch('foo.1'), 'bat');
+      assert.isNull(statham.fetch('foo.2'), null);
+    });
+
+    it("Should return 'null' if the key is invalid.", () => {
       let statham = new Statham({food: {bacon: {taste: 'good'}}});
 
-      assert.isUndefined(statham.fetch('food.apple'), 'It did not return "undefined".');
-      assert.isUndefined(statham.fetch('food.apple.going.deeper'), 'It did not return "undefined".');
+      assert.isNull(statham.fetch('food.apple'), 'It did not return "null".');
+      assert.isNull(statham.fetch('food.apple.going.deeper'), 'It did not return "null".');
     });
   });
 
@@ -306,6 +326,20 @@ describe('Statham', () => {
       statham.put('food.bacon.whatevs', 'ok');
 
       assert.strictEqual(statham.data['food.bacon.whatevs'], 'ok', 'Key and value not set properly.');
+    });
+
+    it("Should put keys that aren't nested.", () => {
+      let statham = new Statham({food: {bacon: {}}});
+      statham.put('cake', 'lie');
+
+      assert.strictEqual(statham.data.cake, 'lie', "It does not return the instance's data.");
+    });
+
+    it("Should put keys that are nested but don't exist yet.", () => {
+      let statham = new Statham({food: {bacon: {}}});
+      statham.put('a.b.c.d.e.f.g.h.i.l.k.j.m.n.o.p.q.r.s.t.u.v.w.x.y.z', 'boop');
+
+      assert.strictEqual(statham.data.a.b.c.d.e.f.g.h.i.l.k.j.m.n.o.p.q.r.s.t.u.v.w.x.y.z, 'boop');
     });
 
     it("Should return the modified instance's data.", () => {

@@ -28,7 +28,7 @@ let statham = new Statham(data, Statham.MODE_NESTED);
 statham.put('me', 'down');
 
 // Fetch a value.
-statham.fetch('me');
+statham.fetch('me', 'default value');
 
 // Remove a value.
 statham.remove('me');
@@ -44,7 +44,8 @@ statham.merge({override: 'something'}, {and: {add: {something: 'else'}}});
 // And the same again, but with nested keys!
 statham.merge(
   {'no.way.this.is.not.possible': 'right?', 'you.are.wrong': 'It is'},
-  {mind: 'blown'}
+  {mind: 'blown'},
+  new Statham({andThis: 'also works'})
 );
 
 // Flatten object (nested objects to dot-notation keys):

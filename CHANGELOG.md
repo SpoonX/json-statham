@@ -1,3 +1,18 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/SpoonX/json-statham/compare/v2.0.5...v2.1.0) (2016-08-09)
+
+
+### Bug Fixes
+
+* **statham:** search bug, create-nested bug and false positives bug ([a7717f1](https://github.com/SpoonX/json-statham/commit/a7717f1))
+
+
+### Features
+
+* **utils:** Added isPojo method ([f37b400](https://github.com/SpoonX/json-statham/commit/f37b400))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/SpoonX/json-statham/compare/v2.0.4...v2.0.5) (2016-08-09)
 

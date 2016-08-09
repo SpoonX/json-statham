@@ -123,12 +123,12 @@ export declare class Statham {
   /**
    * Fetches value of given key.
    *
-   * @param {String} key
-   * @param {{}}     [data] Base object to search in
+   * @param {String|Array} key
+   * @param {*}            [defaultValue] Value to return if key was not found
    *
    * @returns {*}
    */
-  fetch(key?:string, data?:{}):any;
+  fetch(key?:string, defaultValue?:any):any;
 
   /**
    * Sets value for a key.
@@ -186,7 +186,7 @@ export declare class Utils {
    *
    * @return {Array} The key normalized to an array of simple strings
    */
-  static normalizeKey(...rest: Array<string|Array<any>>):Array<string>;
+  static normalizeKey(...rest:Array<string|Array<any>>):Array<string>;
 
   /**
    * Returns whether or not the environment is server-side.
@@ -201,4 +201,13 @@ export declare class Utils {
    * @return {Promise}
    */
   static unsupportedEnvironment():Promise;
+
+  /**
+   * Check if `target` is a Plain ol' Javascript Object.
+   *
+   * @param {*} target
+   *
+   * @return {boolean}
+   */
+  static isPojo(target:any):boolean;
 }

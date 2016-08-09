@@ -1,5 +1,7 @@
 'use strict';
 
+var Utils = require('./utils');
+
 /**
  * Flattens nested object (dot separated keys).
  *
@@ -9,12 +11,12 @@
  *
  * @return {{}}
  */
-module.exports = function flatten (source, basePath, target) {
+module.exports = function flatten(source, basePath, target) {
   basePath = basePath || '';
   target   = target || {};
 
   Object.getOwnPropertyNames(source).forEach(function (key) {
-    if (source[key].constructor === Object) {
+    if (Utils.isPojo(source[key])) {
       flatten(source[key], basePath + key + '.', target);
 
       return;
