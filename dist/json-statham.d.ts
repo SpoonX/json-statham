@@ -186,7 +186,7 @@ export declare class Utils {
    *
    * @return {Array} The key normalized to an array of simple strings
    */
-  static normalizeKey(...rest: Array<string>):Array<string>;
+  static normalizeKey(...rest: Array<string|Array<any>>):Array<string>;
 
   /**
    * Returns whether or not the environment is server-side.
