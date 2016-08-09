@@ -1,6 +1,6 @@
 {
   "name": "json-statham",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "typings": "dist/json-statham.d.ts",
