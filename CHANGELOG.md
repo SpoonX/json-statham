@@ -1,3 +1,8 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/SpoonX/json-statham/compare/v2.0.3...v2.0.4) (2016-08-09)
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/SpoonX/json-statham/compare/v2.0.2...v2.0.3) (2016-08-09)
 
