@@ -3,6 +3,7 @@
   "version": "1.6.1",
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
+  "typings": "dist/json-statham.d.ts",
   "scripts": {
     "test": "eslint index.js lib && mocha -b",
     "build": "buble -i index.js -o dist/index.js && buble -i lib/ -o dist/lib/"
