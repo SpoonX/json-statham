@@ -156,21 +156,39 @@ class Statham {
   /**
    * Fetches value of given key.
    *
-   * @param {String} key
-   * @param {{}}     [data] Base object to search in
+   * @param {String|Array} key
+   * @param {*}            [defaultValue] Value to return if key was not found
    *
    * @returns {*}
    */
-  fetch(key, data) {
-    let rest = Utils.normalizeKey(key);
-    key      = rest.shift();
-    data     = data || this.data;
+  fetch(key, defaultValue) {
+    defaultValue = typeof defaultValue === 'undefined' ? null : defaultValue;
 
-    return rest.length === 0 ? data[key] : this.fetch(rest, data[key]);
+    if (typeof this.data[key] !== 'undefined') {
+      return this.data[key];
+    }
+
+    if (this.isModeFlat()) {
+      return defaultValue;
+    }
+
+    let keys    = Utils.normalizeKey(key);
+    let lastKey = keys.pop();
+    let tmp     = this.data;
+
+    for (let i = 0; i < keys.length; i++) {
+      if (typeof tmp[keys[i]] === 'undefined') {
+        return defaultValue;
+      }
+
+      tmp = tmp[keys[i]];
+    }
+
+    return typeof tmp[lastKey] === 'undefined' ? defaultValue : tmp[lastKey];
   }
 
   /**
-   * Sets value for a key.
+   * Sets value for a key (creates object in path when not found).
    *
    * @param {String|Array} key    Array of key parts, or dot separated key.
    * @param {*}            value
@@ -178,19 +196,25 @@ class Statham {
    * @returns {Statham}
    */
   put(key, value) {
-    if (this.isModeFlat() || key.search('.') === -1) {
+    if (this.isModeFlat() || key.indexOf('.') === -1) {
       this.data[key] = value;
 
       return this;
     }
 
-    let normalizedKey = Utils.normalizeKey(key);
-    let lastKey       = normalizedKey.pop();
-    let source        = this.fetch(normalizedKey);
+    let keys    = Utils.normalizeKey(key);
+    let lastKey = keys.pop();
+    let tmp     = this.data;
 
-    if (typeof source === 'object') {
-      source[lastKey] = value;
-    }
+    keys.forEach(value => {
+      if (typeof tmp[value] === 'undefined') {
+        tmp[value] = {};
+      }
+
+      tmp = tmp[value];
+    });
+
+    tmp[lastKey] = value;
 
     return this;
   }
@@ -203,7 +227,7 @@ class Statham {
    * @returns {Statham}
    */
   remove(key) {
-    if (this.isModeFlat() || key.search('.') === -1) {
+    if (this.isModeFlat() || key.indexOf('.') === -1) {
       delete this.data[key];
 
       return this;
