@@ -72,7 +72,7 @@ export declare class Statham {
    *
    * @return {Statham}
    */
-  merge(sources?:Array<{}|Statham>):Statham;
+  merge(...sources:Array<{}|Statham>):Statham;
 
   /**
    * Sets the mode.
@@ -186,7 +186,7 @@ export declare class Utils {
    *
    * @return {Array} The key normalized to an array of simple strings
    */
-  static normalizeKey(rest?:string | Array<string>):Array<string>;
+  static normalizeKey(...rest:string | Array<string>):Array<string>;
 
   /**
    * Returns whether or not the environment is server-side.
