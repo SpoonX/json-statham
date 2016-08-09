@@ -95,3 +95,11 @@ let Statham = require('json-statham').flatten;
 let data    = require('./my-file.json');
 let flatten = flatten(data);
 ```
+
+## Building the code
+For this code to work in the browser, there's an extra transpile step included.
+Running this is as easy as executing the following command:
+
+`npm run build`
+
+The built code will appear in the dist directory.

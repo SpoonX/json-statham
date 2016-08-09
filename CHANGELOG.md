@@ -1,3 +1,14 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/SpoonX/json-statham/compare/v1.5.0...v2.0.0) (2016-08-08)
+
+
+### Features
+
+* **project:** add 'npm run build'  to buble build the jspm dist ([addac85](https://github.com/SpoonX/json-statham/commit/addac85))
+* **project:** Allow merging Statham instances ([35cf55d](https://github.com/SpoonX/json-statham/commit/35cf55d))
+
+
+
 <a name="1.6.1"></a>
 ## [1.6.1](https://github.com/SpoonX/json-statham/compare/v1.5.0...v1.6.1) (2016-08-08)
 

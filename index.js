@@ -73,6 +73,10 @@ class Statham {
         return;
       }
 
+      if (source instanceof Statham) {
+        source = source.data;
+      }
+
       mergeData.push(this.isModeFlat() ? flatten(source) : expand(source));
     });
 
