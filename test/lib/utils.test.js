@@ -20,7 +20,7 @@ describe('Utils', () => {
       Utils.unsupportedEnvironment().catch(hitMe => {
         assert.strictEqual(
           hitMe.message,
-          'Unsupported environment. This method only works on the server (node.js).',
+          'Unsupported environment. For a browser-compatible version, go to https://www.npmjs.com/package/homefront',
           'Did not get the expected exception.'
         );
 
@@ -29,19 +29,4 @@ describe('Utils', () => {
     });
   });
 
-  describe('static .normalizeKey()', () => {
-    it('Should properly normalize given key.', () => {
-      let weirdKeyOne   = 'some.stupid.idea';
-      let weirdKeyTwo   = 'maybe';
-      let weirdKeyThree = '.';
-      let weirdKeyFour  = ['I', 'should', 'give', 'up'];
-      let weirdKeyFive  = '';
-
-      assert.deepEqual(Utils.normalizeKey(weirdKeyOne), ['some', 'stupid', 'idea'], 'Unexpected key.');
-      assert.deepEqual(Utils.normalizeKey(weirdKeyTwo), ['maybe'], 'Unexpected key.');
-      assert.deepEqual(Utils.normalizeKey(weirdKeyThree), ['', ''], 'Unexpected key.');
-      assert.deepEqual(Utils.normalizeKey(weirdKeyFour), ['I', 'should', 'give', 'up'], 'Unexpected key.');
-      assert.deepEqual(Utils.normalizeKey(weirdKeyFive), [''], 'Unexpected key.');
-    });
-  });
 });
