@@ -1,3 +1,4 @@
+import {Homefront} from "homefront/homefront";
 /**
  * Expands flat object to nested object.
  *
@@ -22,29 +23,9 @@ export declare class FileSystem {
 }
 
 /**
- * Flattens nested object (dot separated keys).
- *
- * @param {{}}      source
- * @param {String}  [basePath]
- * @param {{}}      [target]
- *
- * @return {{}}
- */
-export declare function flatten(source?:{}, basePath?:string, target?:{}):{};
-/**
  * Kick your JSON's ass, with json-statham's help.
  */
-export declare class Statham {
-
-  /**
-   * @return {string}
-   */
-  static MODE_NESTED:string;
-
-  /**
-   * @return {string}
-   */
-  static MODE_FLAT:string;
+export declare class Statham extends Homefront {
 
   /**
    * Constructs a new instance of Statham.
@@ -66,90 +47,6 @@ export declare class Statham {
   static fromFile(fileName?:string, mode?:string):Promise;
 
   /**
-   * Recursively merges given sources into data.
-   *
-   * @param {{}[]} sources One or more, or array of, objects to merge into data (left to right).
-   *
-   * @return {Statham}
-   */
-  merge(...sources:Array<{}|Statham>):Statham;
-
-  /**
-   * Sets the mode.
-   *
-   * @param {String} [mode] Defaults to nested.
-   *
-   * @returns {Statham} Fluent interface
-   *
-   * @throws {Error}
-   */
-  setMode(mode?:string):Statham;
-
-  /**
-   * Gets the mode.
-   *
-   * @return {String}
-   */
-  getMode():string;
-
-  /**
-   * Expands flat object to nested object.
-   *
-   * @return {{}}
-   */
-  expand(source?:{}):{};
-
-  /**
-   * Flattens nested object (dot separated keys).
-   *
-   * @return {{}}
-   */
-  flatten(source?:{}, basePath?:string, target?:{}):{};
-
-  /**
-   * Returns whether or not mode is flat.
-   *
-   * @return {boolean}
-   */
-  isModeFlat():boolean;
-
-  /**
-   * Returns whether or not mode is nested.
-   *
-   * @return {boolean}
-   */
-  isModeNested():boolean;
-
-  /**
-   * Fetches value of given key.
-   *
-   * @param {String|Array} key
-   * @param {*}            [defaultValue] Value to return if key was not found
-   *
-   * @returns {*}
-   */
-  fetch(key?:string, defaultValue?:any):any;
-
-  /**
-   * Sets value for a key.
-   *
-   * @param {String|Array} key    Array of key parts, or dot separated key.
-   * @param {*}            value
-   *
-   * @returns {Statham}
-   */
-  put(key?:string | Array<string>, value?:any):Statham;
-
-  /**
-   * Removes value by key.
-   *
-   * @param {String} key
-   *
-   * @returns {Statham}
-   */
-  remove(key?:string):Statham;
-
-  /**
    * Sets path to file.
    *
    * @param {String} [filePath] Defaults to `undefined`.
@@ -167,26 +64,8 @@ export declare class Statham {
    * @returns {Promise}
    */
   save(filePath?:string | boolean, createPath?:boolean):Promise;
-
-  /**
-   * Search and return keys and values that match given string.
-   *
-   * @param {String|Number} phrase
-   *
-   * @returns {Array}
-   */
-  search(phrase?:string | number):Array<any>;
 }
 export declare class Utils {
-
-  /**
-   * Used to normalize keys of mixed array and dot-separated string to a single array of undotted strings.
-   *
-   * @param {string|Array} rest (dot-separated) string(s) or array of keys
-   *
-   * @return {Array} The key normalized to an array of simple strings
-   */
-  static normalizeKey(...rest:Array<string|Array<any>>):Array<string>;
 
   /**
    * Returns whether or not the environment is server-side.
@@ -201,13 +80,4 @@ export declare class Utils {
    * @return {Promise}
    */
   static unsupportedEnvironment():Promise;
-
-  /**
-   * Check if `target` is a Plain ol' Javascript Object.
-   *
-   * @param {*} target
-   *
-   * @return {boolean}
-   */
-  static isPojo(target:any):boolean;
 }

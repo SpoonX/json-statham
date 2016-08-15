@@ -5,8 +5,7 @@
   "main": "index.js",
   "typings": "json-statham.d.ts",
   "scripts": {
-    "test": "eslint index.js lib && mocha -b",
-    "build": "rm -rf dist && mkdir dist && buble -i index.js -o dist/index.js && buble -i lib/ -o dist/lib/"
+    "test": "eslint index.js lib && mocha -b"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,6 @@
   },
   "homepage": "https://github.com/SpoonX/json-statham#readme",
   "devDependencies": {
-    "buble": "^0.12.5",
     "chai": "^3.5.0",
     "del": "^2.2.0",
     "eslint": "^2.8.0",
