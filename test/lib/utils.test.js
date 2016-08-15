@@ -20,7 +20,7 @@ describe('Utils', () => {
       Utils.unsupportedEnvironment().catch(hitMe => {
         assert.strictEqual(
           hitMe.message,
-          'Unsupported environment. This method only works on the server (node.js).',
+          'Unsupported environment. For a browser-compatible version, go to https://www.npmjs.com/package/homefront',
           'Did not get the expected exception.'
         );
 

@@ -20,7 +20,7 @@ describe('Statham', () => {
           done(new Error('It did not throw exception.'));
         })
         .catch(exception => {
-          assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
+          assert.strictEqual(exception.message, 'Unsupported environment. For a browser-compatible version, go to https://www.npmjs.com/package/homefront');
 
           global.window = undefined;
 
@@ -396,7 +396,7 @@ describe('Statham', () => {
           done(new Error('It did not throw exception.'));
         })
         .catch(exception => {
-          assert.strictEqual(exception.message, 'Unsupported environment. This method only works on the server (node.js).');
+          assert.strictEqual(exception.message, 'Unsupported environment. For a browser-compatible version, go to https://www.npmjs.com/package/homefront');
 
           global.window = undefined;
 

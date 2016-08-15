@@ -17,7 +17,6 @@ class Statham extends Homefront {
    */
   constructor(data, mode, filePath) {
     super(data, mode);
-    this.data = data || {};
 
     this.setMode(mode).setFileLocation(filePath);
   }
