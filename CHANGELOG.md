@@ -1,3 +1,9 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/SpoonX/json-statham/compare/v2.1.0...v3.0.0) (2016-08-15)
+
+* We now extend Homefront.
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/SpoonX/json-statham/compare/v2.0.5...v2.1.0) (2016-08-09)
 
