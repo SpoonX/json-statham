@@ -1,3 +1,13 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/SpoonX/json-statham/compare/v2.1.0...v3.1.0) (2016-09-15)
+
+
+### Features
+
+* **project:** Added ensure option on .fromFile() method ([26f5cce](https://github.com/SpoonX/json-statham/commit/26f5cce))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/SpoonX/json-statham/compare/v2.1.0...v3.0.0) (2016-08-15)
 

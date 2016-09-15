@@ -43,8 +43,8 @@ statham.save(true);                         // Create path for file, too
 statham.save('./matt-schulze.json', true);  // Both options
 ```
 
-### Using .fromFile() 
-This method allows you to tell Statham to fetch the contents of a file itself. This method returns a promise, and resolves with a statham instance (as described above).
+### Using .fromFile(fileName[, ensureFileExists=false])
+This method allows you to tell Statham to fetch the contents of a file itself. When `ensure` has been set to true, statham will create the provided file if it doesn't exist yet. This method returns a promise, and resolves with a statham instance (as described above).
 
 ```js
 let Statham = require('json-statham').Statham;
