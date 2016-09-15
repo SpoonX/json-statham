@@ -11,6 +11,8 @@ let del     = require('del');
 
 describe('Statham', () => {
   describe('static .fromFile()', () => {
+    before(clear);
+    after(clear);
 
     it('Should throw error if browser.', done => {
       global.window = true;
@@ -50,6 +52,13 @@ describe('Statham', () => {
       return Statham.fromFile(__dirname + '/resources/nested.json').then(statham => {
         assert.strictEqual(statham.filePath, __dirname + '/resources/nested.json', '`filePath` not set.');
       });
+    });
+    
+    it('Should create a new file if `ensure` is set to true', done => {
+      return Statham.fromFile(tmpdir + '/no-such-file.json', null, true).then(() => {
+        require(tmpdir + '/no-such-file.json');
+        done();
+      }).catch(done);
     });
   });
 
