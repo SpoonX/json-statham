@@ -8,7 +8,7 @@ import {Homefront} from "homefront/homefront";
  */
 export declare function expand(source?:{}):{};
 export declare class FileSystem {
-  static fromFile(fileName?:any):any;
+  static fromFile(fileName?:any, ensure?:boolean):any;
 
   /**
    * Save data to file.
@@ -39,12 +39,13 @@ export declare class Statham extends Homefront {
   /**
    * Creates a new instance using the data from `fileName`.
    *
-   * @param {String} fileName
-   * @param {String} [mode]
+   * @param {String}  fileName
+   * @param {String}  [mode]
+   * @param {Boolean} [ensure]
    *
    * @return {Promise}
    */
-  static fromFile(fileName?:string, mode?:string):Promise;
+  static fromFile(fileName?:string, mode?:string, ensure?:boolean):Promise;
 
   /**
    * Sets path to file.
