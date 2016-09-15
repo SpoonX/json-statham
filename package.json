@@ -1,6 +1,6 @@
 {
   "name": "json-statham",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Kick your JSON's ass, with json-statham's help.",
   "main": "index.js",
   "typings": "json-statham.d.ts",
@@ -31,11 +31,11 @@
     "gulp": "^3.9.1",
     "gulp-conventional-changelog": "^1.1.0",
     "mocha": "^2.4.5",
-    "homefront": "^1.1.2"
-  },
-  "dependencies": {
     "extend": "^3.0.0",
     "mkdirp": "^0.5.1"
+  },
+  "dependencies": {
+    "homefront": "^1.1.2"
   },
   "jspm": {
     "jspmPackage": true,
