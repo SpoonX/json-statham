@@ -24,17 +24,18 @@ class Statham extends Homefront {
   /**
    * Creates a new instance using the data from `fileName`.
    *
-   * @param {String} fileName
-   * @param {String} [mode]
+   * @param {String}  fileName
+   * @param {String}  [mode]
+   * @param {Boolean} [ensure]
    *
    * @return {Promise}
    */
-  static fromFile(fileName, mode) {
+  static fromFile(fileName, mode, ensure) {
     if (!Utils.isServer()) {
       return Utils.unsupportedEnvironment();
     }
 
-    return FileSystem.fromFile(fileName).then(data => new Statham(data, mode, fileName));
+    return FileSystem.fromFile(fileName, ensure).then(data => new Statham(data, mode, fileName));
   }
 
   /**
@@ -70,7 +71,6 @@ class Statham extends Homefront {
 
     return FileSystem.save(filePath || this.filePath, !!createPath, this.data);
   }
-
 }
 
 module.exports.Statham = Statham;
